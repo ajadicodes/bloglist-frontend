@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import blogService from "../services/blogs";
+import Login from "./Login";
 
 const Blog = ({ blog }) => (
   <div>
@@ -9,6 +10,7 @@ const Blog = ({ blog }) => (
 
 const Blogs = ({ name }) => {
   const [blogs, setBlogs] = useState([]);
+  const [isReturnToLogin, setIsReturnToLogin] = useState(false);
 
   useEffect(() => {
     blogService
@@ -19,11 +21,23 @@ const Blogs = ({ name }) => {
       });
   }, []);
 
+  if (isReturnToLogin) {
+    return <Login />;
+  }
+
   return (
     <div>
       <h2>blogs</h2>
       <div>
-        {name} logged in <button>logout</button>{" "}
+        {name} logged in{" "}
+        <button
+          onClick={() => {
+            window.localStorage.removeItem("loggedBlogAppUser");
+            setIsReturnToLogin(true);
+          }}
+        >
+          logout
+        </button>{" "}
       </div>
       {blogs.map((blog) => (
         <Blog key={blog.id} blog={blog} />

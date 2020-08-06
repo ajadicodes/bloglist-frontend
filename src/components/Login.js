@@ -10,11 +10,13 @@ const Login = ({ onLogin }) => {
     try {
       const user = await loginServices.login({ username, password });
       onLogin(user);
-      console.log("login data", user);
+      window.localStorage.setItem("loggedBlogAppUser", JSON.stringify(user));
       setUsername("");
       setPassword("");
     } catch (exception) {
-      console.log("something went wrong", exception.error);
+      console.error("something went wrong", exception.message);
+      setUsername("");
+      setPassword("");
     }
   };
 
