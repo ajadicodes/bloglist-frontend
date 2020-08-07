@@ -19,6 +19,16 @@ const Login = ({ onLogin }) => {
       setUsername("");
       setPassword("");
     } catch (error) {
+      if (error.response.status === 500) {
+        setErrorMessage("Could not connect to server.");
+        setTimeout(() => {
+          setErrorMessage(null);
+        }, 5000);
+        setUsername("");
+        setPassword("");
+        return;
+      }
+
       setErrorMessage(error.response.data.error);
       setTimeout(() => {
         setErrorMessage(null);
