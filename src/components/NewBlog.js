@@ -20,9 +20,9 @@ const NewBlog = ({ handleNewBlogPost, handleNotifier }) => {
         `a new blog '${blogPosted.title}' by ${blogPosted.author} added`
       );
     } catch (error) {
-      handleNotifier("something went wrong while trying to add blog");
+      handleNotifier(error.response);
       setTimeout(() => {
-        handleNotifier(null);
+        handleNotifier({ data: null, status: null });
       }, 5000);
     }
   };

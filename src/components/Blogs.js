@@ -13,7 +13,10 @@ const Blog = ({ blog }) => (
 const Blogs = ({ name }) => {
   const [blogs, setBlogs] = useState([]);
   const [isReturnToLogin, setIsReturnToLogin] = useState(false);
-  const [notificationMessage, setNotificationMessage] = useState(null);
+  const [notificationMessage, setNotificationMessage] = useState({
+    data: null,
+    status: null,
+  });
 
   useEffect(() => {
     blogService
@@ -33,13 +36,8 @@ const Blogs = ({ name }) => {
     <div>
       <h2>blogs</h2>
       <Notification
-        message={notificationMessage}
-        isError={
-          notificationMessage ===
-          "something went wrong while trying to add blog"
-            ? true
-            : false
-        }
+        message={notificationMessage.data}
+        isError={notificationMessage.status >= 400 ? true : false}
       />
       <div>
         {name} logged in{" "}

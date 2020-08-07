@@ -18,8 +18,8 @@ const Login = ({ onLogin }) => {
       blogServices.setToken(user.token);
       setUsername("");
       setPassword("");
-    } catch (exception) {
-      setErrorMessage("wrong username or password");
+    } catch (error) {
+      setErrorMessage(error.response.data);
       setTimeout(() => {
         setErrorMessage(null);
       }, 5000);
