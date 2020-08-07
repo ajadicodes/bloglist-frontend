@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import blogService from "../services/blogs";
 import Login from "./Login";
+import NewBlog from "./NewBlog";
 
 const Blog = ({ blog }) => (
   <div>
@@ -39,6 +40,11 @@ const Blogs = ({ name }) => {
           logout
         </button>{" "}
       </div>
+      <NewBlog
+        handleNewBlogPost={(newBlog) => {
+          setBlogs(blogs.concat(newBlog));
+        }}
+      />
       {blogs.map((blog) => (
         <Blog key={blog.id} blog={blog} />
       ))}
