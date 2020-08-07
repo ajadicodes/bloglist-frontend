@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import blogServices from "../services/blogs";
 
-const NewBlog = ({ handleNewBlogPost }) => {
+const NewBlog = ({ handleNewBlogPost, handleNotifier }) => {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [url, setUrl] = useState("");
@@ -16,8 +16,14 @@ const NewBlog = ({ handleNewBlogPost }) => {
       };
       const blogPosted = await blogServices.create(newBlogPost);
       handleNewBlogPost(blogPosted);
+      handleNotifier(
+        `a new blog '${blogPosted.title}' by ${blogPosted.author} added`
+      );
     } catch (error) {
-      console.error("something went wrong posting a new blog", error.message);
+      handleNotifier("something went wrong while trying to add blog");
+      setTimeout(() => {
+        handleNotifier(null);
+      }, 5000);
     }
   };
 

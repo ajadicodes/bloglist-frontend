@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import blogService from "../services/blogs";
 import Login from "./Login";
 import NewBlog from "./NewBlog";
+import Notification from "./Notification";
 
 const Blog = ({ blog }) => (
   <div>
@@ -12,6 +13,7 @@ const Blog = ({ blog }) => (
 const Blogs = ({ name }) => {
   const [blogs, setBlogs] = useState([]);
   const [isReturnToLogin, setIsReturnToLogin] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState(null);
 
   useEffect(() => {
     blogService
@@ -29,6 +31,15 @@ const Blogs = ({ name }) => {
   return (
     <div>
       <h2>blogs</h2>
+      <Notification
+        message={notificationMessage}
+        isError={
+          notificationMessage ===
+          "something went wrong while trying to add blog"
+            ? true
+            : false
+        }
+      />
       <div>
         {name} logged in{" "}
         <button
@@ -43,6 +54,9 @@ const Blogs = ({ name }) => {
       <NewBlog
         handleNewBlogPost={(newBlog) => {
           setBlogs(blogs.concat(newBlog));
+        }}
+        handleNotifier={(notificationMessage) => {
+          setNotificationMessage(notificationMessage);
         }}
       />
       {blogs.map((blog) => (

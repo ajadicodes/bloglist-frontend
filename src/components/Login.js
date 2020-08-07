@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import loginServices from "../services/login";
 import blogServices from "../services/blogs";
+import Notification from "./Notification";
 
 const Login = ({ onLogin }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState(null);
 
   const handleOnSubmit = async (event) => {
     event.preventDefault();
+
     try {
       const user = await loginServices.login({ username, password });
       window.localStorage.setItem("loggedBlogAppUser", JSON.stringify(user));
@@ -16,7 +19,10 @@ const Login = ({ onLogin }) => {
       setUsername("");
       setPassword("");
     } catch (exception) {
-      console.error("something went wrong", exception.message);
+      setErrorMessage("wrong username or password");
+      setTimeout(() => {
+        setErrorMessage(null);
+      }, 5000);
       setUsername("");
       setPassword("");
     }
@@ -25,6 +31,7 @@ const Login = ({ onLogin }) => {
   return (
     <div>
       <h2>log in to application</h2>
+      <Notification message={errorMessage} isError={true} />
       <form onSubmit={handleOnSubmit}>
         <div>
           username{" "}
