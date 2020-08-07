@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import blogService from "../services/blogs";
-import Login from "./Login";
 import NewBlog from "./NewBlog";
 import Notification from "./Notification";
+import App from "../App";
 
 const Blog = ({ blog }) => (
   <div>
@@ -24,8 +24,9 @@ const Blogs = ({ name }) => {
       });
   }, []);
 
+  // return to *App* (the entry into blog app)
   if (isReturnToLogin) {
-    return <Login />;
+    return <App />;
   }
 
   return (
