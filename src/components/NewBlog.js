@@ -15,12 +15,37 @@ const NewBlog = ({ handleNewBlogPost, handleNotifier }) => {
         url,
       };
       const blogPosted = await blogServices.create(newBlogPost);
-      handleNewBlogPost(blogPosted);
-      handleNotifier(
-        `a new blog '${blogPosted.title}' by ${blogPosted.author} added`
-      );
+      handleNewBlogPost(blogPosted.data);
+      const notificationMessage = {
+        data: `a new blog '${blogPosted.data.title}' by ${blogPosted.data.author} added`,
+        status: blogPosted.status,
+      };
+
+      // reset fields
+      setTitle("");
+      setAuthor("");
+      setUrl("");
+
+      handleNotifier(notificationMessage);
+
+      // reset notification message
+      setTimeout(() => {
+        handleNotifier({ data: null, status: null });
+      }, 5000);
     } catch (error) {
-      handleNotifier(error.response);
+      const notificationMessage = {
+        data: error.response.data.error,
+        status: error.response.status,
+      };
+
+      // reset fields
+      setTitle("");
+      setAuthor("");
+      setUrl("");
+
+      handleNotifier(notificationMessage);
+
+      // reset notification message
       setTimeout(() => {
         handleNotifier({ data: null, status: null });
       }, 5000);

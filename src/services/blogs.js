@@ -23,7 +23,7 @@ const create = async (newBlogPost) => {
 
   try {
     const response = await axios.post(baseUrl, newBlogPost, config);
-    return response.data;
+    return { data: response.data, status: response.status };
   } catch (error) {
     throw error;
   }
