@@ -14,20 +14,20 @@ const Blog = ({ blog }) => {
     marginBottom: 5,
   };
 
-  const toggleStyle = {
-    float: "right",
-  };
-
   return (
     <div style={blogStyle}>
-      {blog.title} {blog.author}
-      <Togglable style={toggleStyle} defaultLabel="view" cancelLabel="hide">
-        <div>{blog.url}</div>
-        <div>
-          likes {blog.likes} <button>like</button>
-        </div>
-        <div>{blog.user ? blog.user.name : ""}</div>
-      </Togglable>
+      <div>
+        {blog.title} {blog.author}
+      </div>
+      <div>
+        <Togglable defaultLabel="view" cancelLabel="hide">
+          <div>{blog.url}</div>
+          <div>
+            likes {blog.likes} <button>like</button>
+          </div>
+          <div>{blog.user ? blog.user.name : ""}</div>
+        </Togglable>
+      </div>
     </div>
   );
 };
