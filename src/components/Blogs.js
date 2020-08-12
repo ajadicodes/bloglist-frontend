@@ -3,12 +3,34 @@ import blogService from "../services/blogs";
 import NewBlog from "./NewBlog";
 import Notification from "./Notification";
 import App from "../App";
+import Togglable from "./Togglable";
 
-const Blog = ({ blog }) => (
-  <div>
-    {blog.title} {blog.author}
-  </div>
-);
+const Blog = ({ blog }) => {
+  const blogStyle = {
+    paddingTop: 10,
+    paddingLeft: 2,
+    border: "solid",
+    borderWidth: 1,
+    marginBottom: 5,
+  };
+
+  const toggleStyle = {
+    float: "right",
+  };
+
+  return (
+    <div style={blogStyle}>
+      {blog.title} {blog.author}
+      <Togglable style={toggleStyle} defaultLabel="view" cancelLabel="hide">
+        <div>{blog.url}</div>
+        <div>
+          likes {blog.likes} <button>like</button>
+        </div>
+        <div>{blog.user ? blog.user.name : ""}</div>
+      </Togglable>
+    </div>
+  );
+};
 
 const Blogs = ({ name }) => {
   const [blogs, setBlogs] = useState([]);
@@ -50,14 +72,16 @@ const Blogs = ({ name }) => {
           logout
         </button>{" "}
       </div>
-      <NewBlog
-        handleNewBlogPost={(newBlog) => {
-          setBlogs(blogs.concat(newBlog));
-        }}
-        handleNotifier={(notificationMessage) => {
-          setNotificationMessage(notificationMessage);
-        }}
-      />
+      <Togglable defaultLabel="create new blog" cancelLabel="cancel">
+        <NewBlog
+          handleNewBlogPost={(newBlog) => {
+            setBlogs(blogs.concat(newBlog));
+          }}
+          handleNotifier={(notificationMessage) => {
+            setNotificationMessage(notificationMessage);
+          }}
+        />
+      </Togglable>
       {blogs.map((blog) => (
         <Blog key={blog.id} blog={blog} />
       ))}
