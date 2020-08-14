@@ -5,7 +5,9 @@ import Notification from "./Notification";
 import App from "../App";
 import Togglable from "./Togglable";
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, user }) => {
+  const [blogState, setBlogState] = useState(blog);
+
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -14,18 +16,40 @@ const Blog = ({ blog }) => {
     marginBottom: 5,
   };
 
+  console.log("++++ blog state", blogState);
+
+  const onLikeClick = async () => {
+    const blogUpdate = {
+      ...blog,
+      likes: blogState.likes + 1,
+      user: blogState.user.id,
+    };
+    console.log("xxxxx before sending to the server", blogUpdate);
+    const updatedBlog = await blogService.update(blog.id, blogUpdate);
+    const blogToRender = {
+      ...updatedBlog,
+      likes: updatedBlog.likes,
+      user: {
+        id: blogState.user.id,
+        name: user.name,
+        username: user.username,
+      },
+    };
+    setBlogState(blogToRender);
+  };
+
   return (
     <div style={blogStyle}>
       <div>
-        {blog.title} {blog.author}
+        {blogState.title} {blogState.author}
       </div>
       <div>
         <Togglable defaultLabel="view" cancelLabel="hide">
-          <div>{blog.url}</div>
+          <div>{blogState.url}</div>
           <div>
-            likes {blog.likes} <button>like</button>
+            likes {blogState.likes} <button onClick={onLikeClick}>like</button>
           </div>
-          <div>{blog.user ? blog.user.name : ""}</div>
+          <div>{blogState.user ? blogState.user.name : "N/A"}</div>
         </Togglable>
       </div>
     </div>
@@ -39,6 +63,8 @@ const Blogs = ({ blogUser }) => {
     data: null,
     status: null,
   });
+
+  console.log("$$$$$ blogs:", blogs);
 
   useEffect(() => {
     blogService
@@ -84,7 +110,7 @@ const Blogs = ({ blogUser }) => {
         />
       </Togglable>
       {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} user={blogUser} />
       ))}
     </div>
   );

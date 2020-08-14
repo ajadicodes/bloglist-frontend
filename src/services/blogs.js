@@ -29,4 +29,13 @@ const create = async (newBlogPost) => {
   }
 };
 
-export default { getAll, create, setToken };
+const update = async (id, updatedBlogPost) => {
+  try {
+    const response = await axios.put(`${baseUrl}/${id}`, updatedBlogPost);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export default { getAll, create, update, setToken };
