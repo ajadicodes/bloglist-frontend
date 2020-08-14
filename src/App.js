@@ -24,7 +24,7 @@ const App = () => {
     return <Login onLogin={handleLogin} />;
   }
 
-  return <Blogs name={user.name} />;
+  return <Blogs blogUser={user} />;
 };
 
 export default App;

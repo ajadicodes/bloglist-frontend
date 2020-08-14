@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import blogServices from "../services/blogs";
 
-const NewBlog = ({ handleNewBlogPost, handleNotifier }) => {
+const NewBlog = ({ handleNewBlogPost, handleNotifier, blogPoster }) => {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [url, setUrl] = useState("");
@@ -15,7 +15,14 @@ const NewBlog = ({ handleNewBlogPost, handleNotifier }) => {
         url,
       };
       const blogPosted = await blogServices.create(newBlogPost);
-      handleNewBlogPost(blogPosted.data);
+      handleNewBlogPost({
+        ...blogPosted.data,
+        user: {
+          id: blogPosted.data.user,
+          name: blogPoster.name,
+          username: blogPoster.username,
+        },
+      });
       const notificationMessage = {
         data: `a new blog '${blogPosted.data.title}' by ${blogPosted.data.author} added`,
         status: blogPosted.status,

@@ -32,7 +32,7 @@ const Blog = ({ blog }) => {
   );
 };
 
-const Blogs = ({ name }) => {
+const Blogs = ({ blogUser }) => {
   const [blogs, setBlogs] = useState([]);
   const [isReturnToLogin, setIsReturnToLogin] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState({
@@ -45,7 +45,7 @@ const Blogs = ({ name }) => {
       .getAll()
       .then((blogs) => setBlogs(blogs))
       .catch((error) => {
-        console.log("something went wrong while fetching blogs", error);
+        console.error("something went wrong while fetching blogs", error);
       });
   }, []);
 
@@ -62,7 +62,7 @@ const Blogs = ({ name }) => {
         isError={notificationMessage.status >= 400 ? true : false}
       />
       <div>
-        {name} logged in{" "}
+        {blogUser.name} logged in{" "}
         <button
           onClick={() => {
             window.localStorage.removeItem("loggedBlogAppUser");
@@ -80,6 +80,7 @@ const Blogs = ({ name }) => {
           handleNotifier={(notificationMessage) => {
             setNotificationMessage(notificationMessage);
           }}
+          blogPoster={blogUser}
         />
       </Togglable>
       {blogs.map((blog) => (
