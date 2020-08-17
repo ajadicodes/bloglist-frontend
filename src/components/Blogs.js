@@ -16,15 +16,13 @@ const Blog = ({ blog, user }) => {
     marginBottom: 5,
   };
 
-  console.log("++++ blog state", blogState);
-
   const onLikeClick = async () => {
     const blogUpdate = {
       ...blog,
       likes: blogState.likes + 1,
       user: blogState.user.id,
     };
-    console.log("xxxxx before sending to the server", blogUpdate);
+
     const updatedBlog = await blogService.update(blog.id, blogUpdate);
     const blogToRender = {
       ...updatedBlog,
@@ -64,12 +62,13 @@ const Blogs = ({ blogUser }) => {
     status: null,
   });
 
-  console.log("$$$$$ blogs:", blogs);
-
   useEffect(() => {
     blogService
       .getAll()
-      .then((blogs) => setBlogs(blogs))
+      .then((blogs) => {
+        // sort blogs by likes in ascending order
+        setBlogs(blogs.sort((a, b) => a.likes - b.likes));
+      })
       .catch((error) => {
         console.error("something went wrong while fetching blogs", error);
       });
