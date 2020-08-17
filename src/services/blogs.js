@@ -38,4 +38,16 @@ const update = async (id, updatedBlogPost) => {
   }
 };
 
-export default { getAll, create, update, setToken };
+const remove = async (id) => {
+  try {
+    const config = {
+      headers: { Authorization: token },
+    };
+
+    await axios.delete(`${baseUrl}/${id}`, config);
+  } catch (error) {
+    throw error;
+  }
+};
+
+export default { getAll, create, update, remove, setToken };

@@ -1,12 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import blogService from "../services/blogs";
 import NewBlog from "./NewBlog";
 import Notification from "./Notification";
 import App from "../App";
+import DetailsTogglable from "./DetailsTogglable";
 import Togglable from "./Togglable";
 
-const Blog = ({ blog, user }) => {
+const Blog = ({ blog, user, handleRefresh }) => {
   const [blogState, setBlogState] = useState(blog);
+  const [isDetailsVisible, setIsDetailsVisible] = useState(false);
+
+  const detailsRef = useRef();
 
   const blogStyle = {
     paddingTop: 10,
@@ -29,26 +33,46 @@ const Blog = ({ blog, user }) => {
       likes: updatedBlog.likes,
       user: {
         id: blogState.user.id,
-        name: user.name,
-        username: user.username,
+        name: blogState.user.name,
+        username: blogState.user.username,
       },
     };
     setBlogState(blogToRender);
   };
 
+  const toggleDetails = () => {
+    detailsRef.current.toggleVisibility();
+    setIsDetailsVisible(!isDetailsVisible);
+  };
+
+  const onRemoveClick = async () => {
+    if (window.confirm("Do you really want to remove blog?")) {
+      await blogService.remove(blogState.id);
+      handleRefresh();
+    }
+  };
+
   return (
     <div style={blogStyle}>
       <div>
-        {blogState.title} {blogState.author}
+        {blogState.title} {blogState.author}{" "}
+        <button onClick={toggleDetails}>
+          {isDetailsVisible ? "hide" : "view"}
+        </button>
       </div>
       <div>
-        <Togglable defaultLabel="view" cancelLabel="hide">
+        <DetailsTogglable ref={detailsRef}>
           <div>{blogState.url}</div>
           <div>
             likes {blogState.likes} <button onClick={onLikeClick}>like</button>
           </div>
           <div>{blogState.user ? blogState.user.name : "N/A"}</div>
-        </Togglable>
+          <div>
+            {blogState.user && blogState.user.username === user.username ? (
+              <button onClick={onRemoveClick}>remove</button>
+            ) : null}
+          </div>
+        </DetailsTogglable>
       </div>
     </div>
   );
@@ -61,6 +85,7 @@ const Blogs = ({ blogUser }) => {
     data: null,
     status: null,
   });
+  const [refreshBlogs, setRefreshBlogs] = useState(false);
 
   useEffect(() => {
     blogService
@@ -72,7 +97,7 @@ const Blogs = ({ blogUser }) => {
       .catch((error) => {
         console.error("something went wrong while fetching blogs", error);
       });
-  }, []);
+  }, [refreshBlogs]);
 
   // return to *App* (the entry into blog app)
   if (isReturnToLogin) {
@@ -109,7 +134,12 @@ const Blogs = ({ blogUser }) => {
         />
       </Togglable>
       {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} user={blogUser} />
+        <Blog
+          key={blog.id}
+          blog={blog}
+          user={blogUser}
+          handleRefresh={() => setRefreshBlogs(!refreshBlogs)}
+        />
       ))}
     </div>
   );
