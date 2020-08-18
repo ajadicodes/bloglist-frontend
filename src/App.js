@@ -1,30 +1,30 @@
-import React, { useState, useEffect } from "react";
-import Blogs from "./components/Blogs";
-import Login from "./components/Login";
-import blogServices from "./services/blogs";
+import React, { useState, useEffect } from 'react'
+import Blogs from './components/Blogs'
+import Login from './components/Login'
+import blogServices from './services/blogs'
 
 const App = () => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(null)
 
   const handleLogin = (someUser) => {
-    setUser(someUser);
-  };
+    setUser(someUser)
+  }
 
   // check if user is locally saved
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem("loggedBlogAppUser");
+    const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
     if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON);
-      setUser(user);
-      blogServices.setToken(user.token);
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+      blogServices.setToken(user.token)
     }
-  }, []);
+  }, [])
 
   if (!user) {
-    return <Login onLogin={handleLogin} />;
+    return <Login onLogin={handleLogin} />
   }
 
-  return <Blogs blogUser={user} />;
-};
+  return <Blogs blogUser={user} />
+}
 
-export default App;
+export default App

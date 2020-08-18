@@ -1,20 +1,20 @@
-import React, { useState } from "react";
-import blogServices from "../services/blogs";
+import React, { useState } from 'react'
+import blogServices from '../services/blogs'
 
 const NewBlog = ({ handleNewBlogPost, handleNotifier, blogPoster }) => {
-  const [title, setTitle] = useState("");
-  const [author, setAuthor] = useState("");
-  const [url, setUrl] = useState("");
+  const [title, setTitle] = useState('')
+  const [author, setAuthor] = useState('')
+  const [url, setUrl] = useState('')
 
   const handleOnSubmit = async (event) => {
-    event.preventDefault();
+    event.preventDefault()
     try {
       const newBlogPost = {
         title,
         author,
         url,
-      };
-      const blogPosted = await blogServices.create(newBlogPost);
+      }
+      const blogPosted = await blogServices.create(newBlogPost)
       handleNewBlogPost({
         ...blogPosted.data,
         user: {
@@ -22,49 +22,49 @@ const NewBlog = ({ handleNewBlogPost, handleNotifier, blogPoster }) => {
           name: blogPoster.name,
           username: blogPoster.username,
         },
-      });
+      })
       const notificationMessage = {
         data: `a new blog '${blogPosted.data.title}' by ${blogPosted.data.author} added`,
         status: blogPosted.status,
-      };
+      }
 
       // reset fields
-      setTitle("");
-      setAuthor("");
-      setUrl("");
+      setTitle('')
+      setAuthor('')
+      setUrl('')
 
-      handleNotifier(notificationMessage);
+      handleNotifier(notificationMessage)
 
       // reset notification message
       setTimeout(() => {
-        handleNotifier({ data: null, status: null });
-      }, 5000);
+        handleNotifier({ data: null, status: null })
+      }, 5000)
     } catch (error) {
       const notificationMessage = {
         data: error.response.data.error,
         status: error.response.status,
-      };
+      }
 
       // reset fields
-      setTitle("");
-      setAuthor("");
-      setUrl("");
+      setTitle('')
+      setAuthor('')
+      setUrl('')
 
-      handleNotifier(notificationMessage);
+      handleNotifier(notificationMessage)
 
       // reset notification message
       setTimeout(() => {
-        handleNotifier({ data: null, status: null });
-      }, 5000);
+        handleNotifier({ data: null, status: null })
+      }, 5000)
     }
-  };
+  }
 
   return (
     <div>
       <h2>create new</h2>
       <form onSubmit={handleOnSubmit}>
         <div>
-          title:{" "}
+          title:{' '}
           <input
             name="Title"
             type="text"
@@ -73,7 +73,7 @@ const NewBlog = ({ handleNewBlogPost, handleNotifier, blogPoster }) => {
           />
         </div>
         <div>
-          author:{" "}
+          author:{' '}
           <input
             name="Author"
             type="text"
@@ -82,7 +82,7 @@ const NewBlog = ({ handleNewBlogPost, handleNotifier, blogPoster }) => {
           />
         </div>
         <div>
-          url:{" "}
+          url:{' '}
           <input
             name="Url"
             type="url"
@@ -93,7 +93,7 @@ const NewBlog = ({ handleNewBlogPost, handleNotifier, blogPoster }) => {
         <button type="submit">create</button>
       </form>
     </div>
-  );
-};
+  )
+}
 
-export default NewBlog;
+export default NewBlog

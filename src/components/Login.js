@@ -1,42 +1,42 @@
-import React, { useState } from "react";
-import loginServices from "../services/login";
-import blogServices from "../services/blogs";
-import Notification from "./Notification";
+import React, { useState } from 'react'
+import loginServices from '../services/login'
+import blogServices from '../services/blogs'
+import Notification from './Notification'
 
 const Login = ({ onLogin }) => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState(null);
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [errorMessage, setErrorMessage] = useState(null)
 
   const handleOnSubmit = async (event) => {
-    event.preventDefault();
+    event.preventDefault()
 
     try {
-      const user = await loginServices.login({ username, password });
-      window.localStorage.setItem("loggedBlogAppUser", JSON.stringify(user));
-      onLogin(user);
-      blogServices.setToken(user.token);
-      setUsername("");
-      setPassword("");
+      const user = await loginServices.login({ username, password })
+      window.localStorage.setItem('loggedBlogAppUser', JSON.stringify(user))
+      onLogin(user)
+      blogServices.setToken(user.token)
+      setUsername('')
+      setPassword('')
     } catch (error) {
       if (error.response.status === 500) {
-        setErrorMessage("Could not connect to server.");
+        setErrorMessage('Could not connect to server.')
         setTimeout(() => {
-          setErrorMessage(null);
-        }, 5000);
-        setUsername("");
-        setPassword("");
-        return;
+          setErrorMessage(null)
+        }, 5000)
+        setUsername('')
+        setPassword('')
+        return
       }
 
-      setErrorMessage(error.response.data.error);
+      setErrorMessage(error.response.data.error)
       setTimeout(() => {
-        setErrorMessage(null);
-      }, 5000);
-      setUsername("");
-      setPassword("");
+        setErrorMessage(null)
+      }, 5000)
+      setUsername('')
+      setPassword('')
     }
-  };
+  }
 
   return (
     <div>
@@ -44,10 +44,10 @@ const Login = ({ onLogin }) => {
       <Notification message={errorMessage} isError={true} />
       <form onSubmit={handleOnSubmit}>
         <div>
-          username{" "}
+          username{' '}
           <input
             onChange={({ target }) => {
-              setUsername(target.value);
+              setUsername(target.value)
             }}
             type="text"
             name="Username"
@@ -55,12 +55,12 @@ const Login = ({ onLogin }) => {
           />
         </div>
         <div>
-          password{" "}
+          password{' '}
           <input
             type="password"
             name="Password"
             onChange={({ target }) => {
-              setPassword(target.value);
+              setPassword(target.value)
             }}
             value={password}
           />
@@ -68,7 +68,7 @@ const Login = ({ onLogin }) => {
         <button type="submit">login</button>
       </form>
     </div>
-  );
-};
+  )
+}
 
-export default Login;
+export default Login

@@ -1,15 +1,15 @@
-import React, { useState } from "react";
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 
 const Togglable = (props) => {
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(false)
 
-  const hideNewBlogForm = { display: visible ? "none" : "" };
-  const showNewBlogForm = { display: visible ? "" : "none" };
+  const hideNewBlogForm = { display: visible ? 'none' : '' }
+  const showNewBlogForm = { display: visible ? '' : 'none' }
 
   const toggleVisibility = () => {
-    setVisible(!visible);
-  };
+    setVisible(!visible)
+  }
 
   return (
     <div>
@@ -23,12 +23,12 @@ const Togglable = (props) => {
         <button onClick={toggleVisibility}>{props.cancelLabel}</button>
       </div>
     </div>
-  );
-};
+  )
+}
 
 Togglable.propTypes = {
   defaultLabel: PropTypes.string.isRequired,
-  cancelLabel: PropTypes.string.isRequired
+  cancelLabel: PropTypes.string.isRequired,
 }
 
-export default Togglable;
+export default Togglable
