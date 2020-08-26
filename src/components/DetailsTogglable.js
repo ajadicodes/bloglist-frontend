@@ -15,7 +15,11 @@ const DetailsTogglable = React.forwardRef((props, ref) => {
     }
   })
 
-  return <div style={showDetails}>{props.children}</div>
+  return (
+    <div className="details" style={showDetails}>
+      {props.children}
+    </div>
+  )
 })
 
 DetailsTogglable.displayName = 'DetailsTogglable'
