@@ -14,7 +14,9 @@ const NewBlog = ({ handleNewBlogPost, handleNotifier, blogPoster }) => {
         author,
         url,
       }
+
       const blogPosted = await blogServices.create(newBlogPost)
+
       handleNewBlogPost({
         ...blogPosted.data,
         user: {
@@ -23,6 +25,7 @@ const NewBlog = ({ handleNewBlogPost, handleNotifier, blogPoster }) => {
           username: blogPoster.username,
         },
       })
+
       const notificationMessage = {
         data: `a new blog '${blogPosted.data.title}' by ${blogPosted.data.author} added`,
         status: blogPosted.status,
@@ -60,13 +63,15 @@ const NewBlog = ({ handleNewBlogPost, handleNotifier, blogPoster }) => {
   }
 
   return (
-    <div>
+    <div className="formDiv">
       <h2>create new</h2>
-      <form onSubmit={handleOnSubmit}>
+      <form onSubmit={handleOnSubmit} data-cy="formElement">
         <div>
           title:{' '}
           <input
+            className="titleInput"
             name="Title"
+            data-testid="title-input"
             type="text"
             value={title}
             onChange={({ target }) => setTitle(target.value)}
@@ -75,7 +80,9 @@ const NewBlog = ({ handleNewBlogPost, handleNotifier, blogPoster }) => {
         <div>
           author:{' '}
           <input
+            className="authorInput"
             name="Author"
+            data-testid="author-input"
             type="text"
             value={author}
             onChange={({ target }) => setAuthor(target.value)}
@@ -84,13 +91,17 @@ const NewBlog = ({ handleNewBlogPost, handleNotifier, blogPoster }) => {
         <div>
           url:{' '}
           <input
+            className="urlInput"
             name="Url"
+            data-testid="url-input"
             type="url"
             value={url}
             onChange={({ target }) => setUrl(target.value)}
           />
         </div>
-        <button type="submit">create</button>
+        <button data-testid="create-button" type="submit">
+          create
+        </button>
       </form>
     </div>
   )

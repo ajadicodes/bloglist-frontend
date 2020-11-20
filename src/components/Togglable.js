@@ -15,7 +15,9 @@ const Togglable = (props) => {
     <div>
       {/* render when visibility is false */}
       <div style={hideNewBlogForm}>
-        <button onClick={toggleVisibility}>{props.defaultLabel}</button>
+        <button data-testid="create-new-blog-button" onClick={toggleVisibility}>
+          {props.defaultLabel}
+        </button>
       </div>
       {/* rendered when visibility is true */}
       <div style={showNewBlogForm}>

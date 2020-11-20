@@ -51,7 +51,7 @@ const Blog = ({ blog, user, handleRefresh }) => {
   }
 
   return (
-    <div style={blogStyle} className="blog">
+    <div style={blogStyle} className="blog" data-testid="the-blog">
       <div className="titleAndAuthor">
         {blogState.title} {blogState.author}{' '}
         <button onClick={toggleDetails}>
@@ -61,9 +61,14 @@ const Blog = ({ blog, user, handleRefresh }) => {
       <DetailsTogglable ref={detailsRef}>
         <div>{blogState.url}</div>
         <div>
-          likes {blogState.likes} <button onClick={onLikeClick}>like</button>
+          likes <span data-testid="like-value">{blogState.likes}</span>{' '}
+          <button className="likeButton" onClick={onLikeClick}>
+            like
+          </button>
         </div>
-        <div>{blogState.user ? blogState.user.name : 'N/A'}</div>
+        <div data-testid="blog-poster">
+          {blogState.user ? blogState.user.name : 'N/A'}
+        </div>
         <div>
           {blogState.user && blogState.user.username === user.username ? (
             <button

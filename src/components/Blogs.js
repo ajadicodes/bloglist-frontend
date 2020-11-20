@@ -19,8 +19,8 @@ const Blogs = ({ blogUser }) => {
     blogService
       .getAll()
       .then((blogs) => {
-        // sort blogs by likes in ascending order
-        setBlogs(blogs.sort((a, b) => a.likes - b.likes))
+        // sort blogs by likes in descending order
+        setBlogs(blogs.sort((a, b) => b.likes - a.likes))
       })
       .catch((error) => {
         console.error('something went wrong while fetching blogs', error)
@@ -33,7 +33,7 @@ const Blogs = ({ blogUser }) => {
   }
 
   return (
-    <div>
+    <div data-testid="blog-list">
       <h2>blogs</h2>
       <Notification
         message={notificationMessage.data}

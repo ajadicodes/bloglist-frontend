@@ -12,7 +12,11 @@ const Notification = ({ message, isError = false }) => {
       marginBottom: 10,
     }
 
-    return <div style={notificationStyle}>{message}</div>
+    return (
+      <div data-cy="notification" style={notificationStyle}>
+        {message}
+      </div>
+    )
   }
 
   return null
